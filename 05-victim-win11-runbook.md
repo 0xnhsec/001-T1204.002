@@ -108,3 +108,13 @@ Sigma, deteksi kill chain fase awal kamu sudah jalan**.
 
 Setelah capture lengkap → restore snapshot "clean-pre-exploit" → siap untuk
 fase evasion (XOR encoder / hades_gate) dan LPE dengan telemetry bersih.
+
+# installer sysmon
+if blocked from Vbox or VM try
+```
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+and
+```
+.\install-sysmon.ps1
+```

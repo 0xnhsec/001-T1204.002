@@ -21,6 +21,29 @@ retest evasion (fase hades_gate/XOR nanti) apples-to-apples.
 
 ## 1. Install Sysmon (SEBELUM testing)
 
+### Opsi A — Script `install-sysmon.ps1` (DISARANKAN)
+
+Letakkan script di VM lalu jalankan sebagai Administrator PowerShell:
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass -Force
+.\install-sysmon.ps1
+```
+
+Script ini mencakup: cek session Administrator → download `Sysmon.zip` →
+extract → cari `Sysmon64.exe` (recursive) → validasi config XML (anti
+halaman error HTML) → install dengan config SwiftOnSecurity → verifikasi
+channel otomatis.
+
+> **Bukan bug (false alarm yang sering muncul):** error
+> `Get-ChildItem $env:TEMP\Sysmon` → *"Cannot find path ... does not exist"*
+> yang muncul SEBELUM `Expand-Archive` dijalankan itu NORMAL — folder
+> extract memang belum dibuat. Urutan benar: zip terdownload (ada) →
+> `Expand-Archive` (membuat folder) → baru cek isinya. Script Opsi A sudah
+> menjalankan urutan ini dengan benar sejak awal.
+
+### Opsi B — Manual
+
 Download dari Microsoft Sysinternals (di VM, butuh internet sekali — NAT
 masih bisa keluar):
 
@@ -108,13 +131,3 @@ Sigma, deteksi kill chain fase awal kamu sudah jalan**.
 
 Setelah capture lengkap → restore snapshot "clean-pre-exploit" → siap untuk
 fase evasion (XOR encoder / hades_gate) dan LPE dengan telemetry bersih.
-
-# installer sysmon
-if blocked from Vbox or VM try
-```
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-```
-and
-```
-.\install-sysmon.ps1
-```
